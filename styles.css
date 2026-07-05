@@ -96,8 +96,11 @@ main{padding-top:calc(var(--header-height) + 12px)}
   .site-nav a:hover{background:rgba(255,255,255,0.05);color:var(--text);}
   .header-inner{position:relative}
   .name{font-size:clamp(42px, 12vw, 72px);}
-  .hero{padding-top:110px;}
-  .hero-inner{padding-top:0;padding-bottom:28px;}
+  .hero{padding-top:110px;align-items:center;justify-content:center;}
+  .hero-inner{padding-top:0;padding-bottom:28px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .badge{margin-left:auto;margin-right:auto;}
+  .ctas{flex-direction:column;align-items:center;}
+  .kpis{flex-wrap:wrap;justify-content:center;gap:18px;}
 }
 
 /* minimize section separators (no heavy divisions) */
