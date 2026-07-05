@@ -63,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (menuToggle && nav) {
     const toggleNav = () => {
       const open = nav.classList.toggle('open');
+      menuToggle.classList.toggle('active');
       menuToggle.setAttribute('aria-expanded', String(open));
     };
 
