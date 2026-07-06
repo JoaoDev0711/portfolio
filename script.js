@@ -178,3 +178,48 @@ window.addEventListener('DOMContentLoaded', () => {
     slides.forEach((slide) => observer.observe(slide));
   }
 });
+
+// Correção final dos projetos: ativa overlay no mobile e adiciona sensação de foco/animação.
+window.addEventListener('DOMContentLoaded', () => {
+  const slides = Array.from(document.querySelectorAll('.project-slide'));
+  if (!slides.length) return;
+
+  const mobileQuery = window.matchMedia('(max-width: 980px)');
+
+  const clearActive = () => {
+    slides.forEach((slide) => slide.classList.remove('is-active'));
+  };
+
+  const activateSlide = (slide) => {
+    clearActive();
+    slide.classList.add('is-active');
+  };
+
+  slides.forEach((slide) => {
+    slide.addEventListener('click', () => {
+      if (!mobileQuery.matches) return;
+      if (slide.classList.contains('is-active')) {
+        slide.classList.remove('is-active');
+      } else {
+        activateSlide(slide);
+      }
+    });
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    if (!mobileQuery.matches) return;
+
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) activateSlide(entry.target);
+    });
+  }, {
+    threshold: 0.38,
+    rootMargin: '-18% 0px -18% 0px'
+  });
+
+  slides.forEach((slide) => observer.observe(slide));
+
+  mobileQuery.addEventListener?.('change', () => {
+    clearActive();
+  });
+});
