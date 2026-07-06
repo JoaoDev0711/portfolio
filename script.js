@@ -92,6 +92,7 @@ function initMobileMenu() {
   if (!button || !nav) return;
 
   const closeMenu = () => {
+    document.body.classList.remove('nav-open');
     nav.classList.remove('open');
     button.classList.remove('active');
     button.setAttribute('aria-expanded', 'false');
@@ -99,6 +100,7 @@ function initMobileMenu() {
   };
 
   const openMenu = () => {
+    document.body.classList.add('nav-open');
     nav.classList.add('open');
     button.classList.add('active');
     button.setAttribute('aria-expanded', 'true');
@@ -106,9 +108,14 @@ function initMobileMenu() {
   };
 
   button.addEventListener('click', (event) => {
+    event.preventDefault();
     event.stopPropagation();
-    const isOpen = nav.classList.contains('open');
-    isOpen ? closeMenu() : openMenu();
+
+    if (document.body.classList.contains('nav-open')) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
   });
 
   nav.addEventListener('click', (event) => {
@@ -120,13 +127,17 @@ function initMobileMenu() {
   });
 
   document.addEventListener('click', (event) => {
-    if (!nav.classList.contains('open')) return;
+    if (!document.body.classList.contains('nav-open')) return;
     if (nav.contains(event.target) || button.contains(event.target)) return;
     closeMenu();
   });
 
   window.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') closeMenu();
+  });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 900) closeMenu();
   });
 }
 

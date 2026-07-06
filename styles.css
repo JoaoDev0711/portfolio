@@ -1045,3 +1045,96 @@ main,
     right: 12px;
   }
 }
+
+
+/* =========================================================
+   HOTFIX DEFINITIVO — NAVBAR MOBILE
+   Usa body.nav-open para evitar conflito com blocos antigos.
+========================================================= */
+@media (max-width: 900px) {
+  body.nav-open {
+    overflow: hidden !important;
+  }
+
+  .site-header {
+    z-index: 9999 !important;
+    overflow: visible !important;
+  }
+
+  .header-inner {
+    overflow: visible !important;
+  }
+
+  .menu-toggle {
+    display: flex !important;
+    position: relative !important;
+    z-index: 10001 !important;
+    width: 48px !important;
+    height: 48px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .site-nav {
+    display: flex !important;
+    position: fixed !important;
+    top: 76px !important;
+    left: 14px !important;
+    right: 14px !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: auto !important;
+
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+
+    padding: 14px !important;
+    border-radius: 22px !important;
+    border: 1px solid rgba(255, 255, 255, 0.10) !important;
+    background: rgba(4, 7, 14, 0.98) !important;
+    backdrop-filter: blur(18px) !important;
+    box-shadow: 0 24px 65px rgba(0, 0, 0, 0.55) !important;
+
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transform: translateY(-10px) scale(0.98) !important;
+    transition: opacity .25s ease, transform .25s ease, visibility .25s ease !important;
+    z-index: 10000 !important;
+  }
+
+  body.nav-open .site-nav,
+  .site-nav.open {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: translateY(0) scale(1) !important;
+  }
+
+  .site-nav a {
+    display: block !important;
+    width: 100% !important;
+    padding: 15px 16px !important;
+    border-radius: 16px !important;
+    color: var(--text) !important;
+    background: rgba(255, 255, 255, 0.035) !important;
+    text-align: left !important;
+    font-size: 1rem !important;
+    font-weight: 800 !important;
+  }
+
+  .site-nav a:hover,
+  .site-nav a.active {
+    color: #fff !important;
+    background: rgba(14, 165, 255, 0.16) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-nav {
+    top: 72px !important;
+    left: 10px !important;
+    right: 10px !important;
+  }
+}
