@@ -1,75 +1,270 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Conheça a trajetória, habilidades e objetivos profissionais de João Rodrigues." />
-  <title>Sobre | João Rodrigues</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body class="is-loading">
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="index.html" aria-label="Ir para a página inicial">
-        <span class="dot"></span>João<span class="dev">.dev</span>
-      </a>
+// Funcionalidades principais do portfólio
+// - menu mobile
+// - efeito de digitação
+// - animações ao rolar
+// - transição entre páginas
+// - validação do formulário
 
-      <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+document.addEventListener('DOMContentLoaded', () => {
+  initHeaderScroll();
+  initTypedText();
+  initRevealOnScroll();
+  initMobileMenu();
+  initPageTransition();
+  initTechBelt();
+  initLightbox();
+  initContactForm();
+});
 
-      <nav class="site-nav" aria-label="Navegação principal">
-        <a href="index.html">Início</a>
-        <a href="projetos.html">Projetos</a>
-        <a href="sobre.html" class="active">Sobre</a>
-        <a href="contato.html">Contato</a>
-      </nav>
-    </div>
-  </header>
+function initHeaderScroll() {
+  const header = document.querySelector('.site-header');
+  if (!header) return;
 
-  <main class="container">
-    <section class="section reveal about-section">
-      <div class="section-heading">
-        <p class="section-label">Sobre mim</p>
-        <h1>Sou João Rodrigues, estudante de Engenharia de Software e desenvolvedor em formação.</h1>
-        <p class="section-copy">Tenho interesse por tecnologia, programação e criação de soluções digitais. Busco evoluir constantemente e aplicar meus conhecimentos em projetos reais.</p>
-      </div>
+  const updateHeader = () => {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  };
 
-      <div class="about-card reveal">
-        <div class="about-photo">
-          <img src="assets/foto-sobre.jpeg" alt="Foto de João Rodrigues" />
-        </div>
+  updateHeader();
+  window.addEventListener('scroll', updateHeader, { passive: true });
+}
 
-        <div class="about-desc">
-          <p>
-            Iniciei minha trajetória na programação em 2024, durante um curso de Desenvolvimento de Software. Desde então, venho estudando front-end, back-end e boas práticas de desenvolvimento para criar interfaces modernas e sistemas funcionais.
-          </p>
+function initTypedText() {
+  const typedEl = document.getElementById('typed');
+  if (!typedEl) return;
 
-          <ul class="about-list">
-            <li>Design limpo e identidade visual consistente</li>
-            <li>Sites responsivos com boa experiência de uso</li>
-            <li>Integração entre front-end, back-end e banco de dados</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-  </main>
+  const words = ['JavaScript', 'Frontend', 'FastAPI', 'SQL', 'C#', 'C++', 'C', 'BackEnd'];
+  const typingSpeed = 80;
+  const pauseTime = 1200;
 
-  <footer class="site-footer">
-    <div class="container">
-      <p>© 2026 João Rodrigues. Todos os direitos reservados.</p>
-    </div>
-  </footer>
+  let wordIndex = 0;
+  let letterIndex = 0;
+  let deleting = false;
 
-  <div class="page-transition" aria-hidden="true">
-    <div class="loading-dots"><span></span><span></span><span></span></div>
-  </div>
+  const type = () => {
+    const currentWord = words[wordIndex];
 
-  <script src="script.js"></script>
-</body>
-</html>
+    typedEl.textContent = currentWord.slice(0, letterIndex);
+
+    if (!deleting && letterIndex < currentWord.length) {
+      letterIndex += 1;
+      setTimeout(type, typingSpeed);
+      return;
+    }
+
+    if (!deleting && letterIndex === currentWord.length) {
+      deleting = true;
+      setTimeout(type, pauseTime);
+      return;
+    }
+
+    if (deleting && letterIndex > 0) {
+      letterIndex -= 1;
+      setTimeout(type, typingSpeed);
+      return;
+    }
+
+    deleting = false;
+    wordIndex = (wordIndex + 1) % words.length;
+    setTimeout(type, typingSpeed);
+  };
+
+  type();
+}
+
+function initRevealOnScroll() {
+  const elements = document.querySelectorAll('.reveal');
+  if (!elements.length) return;
+
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('visible');
+      obs.unobserve(entry.target);
+    });
+  }, { threshold: 0.18 });
+
+  elements.forEach((element) => observer.observe(element));
+}
+
+function initMobileMenu() {
+  const button = document.querySelector('.menu-toggle');
+  const nav = document.querySelector('.site-nav');
+  if (!button || !nav) return;
+
+  const closeMenu = () => {
+    nav.classList.remove('open');
+    button.classList.remove('active');
+    button.setAttribute('aria-expanded', 'false');
+    button.setAttribute('aria-label', 'Abrir menu');
+  };
+
+  const openMenu = () => {
+    nav.classList.add('open');
+    button.classList.add('active');
+    button.setAttribute('aria-expanded', 'true');
+    button.setAttribute('aria-label', 'Fechar menu');
+  };
+
+  button.addEventListener('click', (event) => {
+    event.stopPropagation();
+    const isOpen = nav.classList.contains('open');
+    isOpen ? closeMenu() : openMenu();
+  });
+
+  nav.addEventListener('click', (event) => {
+    event.stopPropagation();
+  });
+
+  nav.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!nav.classList.contains('open')) return;
+    if (nav.contains(event.target) || button.contains(event.target)) return;
+    closeMenu();
+  });
+
+  window.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeMenu();
+  });
+}
+
+function initPageTransition() {
+  const internalLinks = document.querySelectorAll('a[href]');
+
+  internalLinks.forEach((link) => {
+    const href = link.getAttribute('href');
+    if (!href || isIgnoredLink(link, href)) return;
+
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
+      document.body.classList.add('is-loading');
+
+      setTimeout(() => {
+        window.location.href = href;
+      }, 520);
+    });
+  });
+
+  setTimeout(() => document.body.classList.remove('is-loading'), 80);
+}
+
+function isIgnoredLink(link, href) {
+  const external = href.startsWith('http') && !href.includes(location.host);
+  return (
+    href.startsWith('#') ||
+    href.startsWith('mailto:') ||
+    href.startsWith('tel:') ||
+    link.target === '_blank' ||
+    external
+  );
+}
+
+function initTechBelt() {
+  document.querySelectorAll('.tech-belt').forEach((container) => {
+    const belt = container.querySelector('.belt');
+    if (!belt) return;
+
+    const originalItems = Array.from(belt.children).map((item) => item.cloneNode(true));
+    const baseWidth = belt.scrollWidth;
+    let position = 0;
+    let speed = 0.4;
+    let animationFrame;
+
+    const fillBelt = () => {
+      while (belt.scrollWidth < container.clientWidth + baseWidth) {
+        originalItems.forEach((item) => belt.appendChild(item.cloneNode(true)));
+      }
+    };
+
+    const animate = () => {
+      position += speed;
+      if (position >= baseWidth) position = 0;
+      belt.style.transform = `translateX(${-position}px)`;
+      animationFrame = requestAnimationFrame(animate);
+    };
+
+    fillBelt();
+    animate();
+
+    container.addEventListener('mouseenter', () => { speed = 0; });
+    container.addEventListener('mouseleave', () => { speed = 0.4; });
+
+    window.addEventListener('resize', () => {
+      cancelAnimationFrame(animationFrame);
+      position = 0;
+      belt.style.transform = 'translateX(0)';
+      fillBelt();
+      animate();
+    });
+  });
+}
+
+function initLightbox() {
+  const images = Array.from(document.querySelectorAll('.gallery-item img'));
+  const lightbox = document.getElementById('siteLightbox');
+  if (!images.length || !lightbox) return;
+
+  const preview = lightbox.querySelector('.lb-img');
+  const closeBtn = lightbox.querySelector('.lb-close');
+  const prevBtn = lightbox.querySelector('.lb-prev');
+  const nextBtn = lightbox.querySelector('.lb-next');
+
+  let currentIndex = 0;
+
+  const open = (index) => {
+    currentIndex = (index + images.length) % images.length;
+    preview.src = images[currentIndex].src;
+    preview.alt = images[currentIndex].alt || 'Imagem ampliada';
+    lightbox.hidden = false;
+  };
+
+  const close = () => {
+    lightbox.hidden = true;
+  };
+
+  const navigate = (direction) => {
+    open(currentIndex + direction);
+  };
+
+  images.forEach((image, index) => {
+    image.addEventListener('click', () => open(index));
+  });
+
+  closeBtn?.addEventListener('click', close);
+  prevBtn?.addEventListener('click', () => navigate(-1));
+  nextBtn?.addEventListener('click', () => navigate(1));
+
+  window.addEventListener('keydown', (event) => {
+    if (lightbox.hidden) return;
+    if (event.key === 'Escape') close();
+    if (event.key === 'ArrowLeft') navigate(-1);
+    if (event.key === 'ArrowRight') navigate(1);
+  });
+}
+
+function initContactForm() {
+  const form = document.getElementById('contactForm');
+  if (!form) return;
+
+  const feedback = form.querySelector('.form-message');
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const name = form.elements.name.value.trim();
+    const email = form.elements.email.value.trim();
+    const message = form.elements.message.value.trim();
+    const isValid = name.length > 1 && emailRegex.test(email) && message.length > 6;
+
+    if (feedback) {
+      feedback.textContent = isValid
+        ? 'Mensagem enviada — obrigado!'
+        : 'Preencha nome, e-mail válido e mensagem.';
+    }
+
+    if (isValid) form.reset();
+  });
+}

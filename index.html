@@ -1,82 +1,97 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>joao.dev — Portfolio</title>
-    <meta name="description" content="Portfolio pessoal — estilo cinematográfico" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body class="is-loading home-page">
-    <!-- Cabeçalho do site e navegação principal -->
-    <header class="site-header">
-      <div class="container header-inner">
-        <div class="brand"><span class="dot"></span>Joao<span class="dev">.dev</span></div>
-        <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false"><span></span><span></span><span></span></button>
-        <nav class="site-nav" aria-label="Navegação principal">
-          <a href="index.html" class="nav-link">Início</a>
-          <a href="projetos.html" class="nav-link">Projetos</a>
-          <a href="sobre.html" class="nav-link">Sobre</a>
-          <a href="contato.html" class="nav-link">Contato</a>
-        </nav>
-      </div>
-    </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Entre em contato com João Rodrigues para projetos, dúvidas e oportunidades." />
+  <title>Contato | João Rodrigues</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="is-loading">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Ir para a página inicial">
+        <span class="dot"></span>João<span class="dev">.dev</span>
+      </a>
 
-    <!-- Conteúdo principal -->
-    <main>
-      <!-- Seção principal: nome, subtítulo e correia de tecnologias -->
-      <section id="home" class="hero">
-        <div class="hero-inner">
-          <div class="badge">Disponível para novos projetos</div>
-          <h1 class="name"><span>João</span><span>Rodrigues</span></h1>
-          <p class="subtitle">Desenvolvendo seus projetos em:  <span id="typed" aria-live="polite"></span></p>
-          <div class="ctas">
-            <a class="btn primary" href="projetos.html">Ver projetos</a>
-            <a class="btn outline" href="sobre.html">Sobre</a>
-          </div>
+      <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
 
-          <div class="kpis">
-            <div class="kpi"><strong>6</strong><span>Linguagens</span></div>
-            <div class="kpi"><strong>3</strong><span>Projetos Principais</span></div>
-            <div class="kpi"><strong>4</strong><span>Projetos Concluídos</span></div>
-            <div class="kpi"><strong>1</strong><span>Projetos em andamento</span></div>
-          </div>
-
-          <div class="tech-belt hero-belt">
-            <div class="belt">
-              <span>C#</span>
-              <span>C++</span>
-              <span>Frontend</span>
-              <span>JavaScript</span>
-              <span>FastAPI</span>
-              <span>SQL</span>
-              <span>C</span>
-              <span>BackEnd</span>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- Seção de resumo -->
-      <section class="section summary">
-        <div class="container">
-          <h2 class="section-title">Resumo</h2>
-          <p class="subtitle">João Rodrigues (jdev) — desenvolvedor full‑stack com foco em back-end e integração. Trabalho com linguagens e frameworks modernos, entregando sistemas escaláveis e produtos digitais.</p>
-        </div>
-      </section>
-    </main>
-
-    <!-- Overlay lightbox para imagens da galeria -->
-    <div id="siteLightbox" class="lightbox" hidden>
-      <button class="lb-close" aria-label="Fechar">✕</button>
-      <button class="lb-prev" aria-label="Anterior">‹</button>
-      <img class="lb-img" src="" alt="" />
-      <button class="lb-next" aria-label="Próximo">›</button>
+      <nav class="site-nav" aria-label="Navegação principal">
+        <a href="index.html">Início</a>
+        <a href="projetos.html">Projetos</a>
+        <a href="sobre.html">Sobre</a>
+        <a href="contato.html" class="active">Contato</a>
+      </nav>
     </div>
+  </header>
 
-    <div class="page-transition"><div class="loading-dots"><span></span><span></span><span></span></div></div>
-    <script src="script.js"></script>
-  </body>
+  <main class="container">
+    <section class="section reveal contact-section">
+      <div class="section-heading">
+        <p class="section-label">Contato</p>
+        <h1>Vamos transformar sua ideia em um projeto digital?</h1>
+        <p class="section-copy">Preencha o formulário abaixo ou acesse uma das minhas redes de contato.</p>
+      </div>
+
+      <div class="contact-grid">
+        <article class="contact-card reveal">
+          <form id="contactForm" class="contact-form" novalidate>
+            <label for="name">Nome</label>
+            <input id="name" name="name" type="text" placeholder="Seu nome" />
+
+            <label for="email">E-mail</label>
+            <input id="email" name="email" type="email" placeholder="seu@email.com" />
+
+            <label for="message">Mensagem</label>
+            <textarea id="message" name="message" placeholder="Conte-me sobre o seu projeto"></textarea>
+
+            <button class="btn primary" type="submit">Enviar mensagem</button>
+            <p class="form-message" aria-live="polite"></p>
+          </form>
+        </article>
+
+        <aside class="contact-card reveal">
+          <p class="section-label">Informações</p>
+          <h2>Disponibilidade</h2>
+          <p>Atendimento remoto para projetos de pequeno e médio porte.</p>
+
+          <ul class="info-list">
+            <li>Resposta em até 48 horas</li>
+            <li>Orientação de estrutura e conteúdo</li>
+            <li>Entrega alinhada ao calendário do projeto</li>
+          </ul>
+
+          <div class="contact-methods">
+            <p class="section-label">Contato direto</p>
+            <ul class="contact-method-list">
+              <li><a class="icon-mail" href="https://mail.google.com/mail/?view=cm&fs=1&to=joaoferreiraneto0711@gmail.com&su=Contato%20pelo%20site" target="_blank" rel="noreferrer noopener">Gmail</a></li>
+              <li><a class="icon-instagram" href="https://instagram.com/jferreira7.11" target="_blank" rel="noreferrer noopener">Instagram</a></li>
+              <li><a class="icon-github" href="https://github.com/JoaoDev0711" target="_blank" rel="noreferrer noopener">GitHub</a></li>
+              <li><a class="icon-linkedin" href="https://www.linkedin.com/in/jo%C3%A3o-rodrigues-205999291/" target="_blank" rel="noreferrer noopener">LinkedIn</a></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 João Rodrigues. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <div class="page-transition" aria-hidden="true">
+    <div class="loading-dots"><span></span><span></span><span></span></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>
