@@ -137,3 +137,44 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+// Melhorias importadas do 2º ZIP: barra de progresso e overlay dos projetos no mobile
+window.addEventListener('DOMContentLoaded', () => {
+  const progressBar = document.querySelector('.scroll-progress');
+  if (progressBar) {
+    const updateProgress = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      progressBar.style.width = `${progress}%`;
+    };
+    updateProgress();
+    window.addEventListener('scroll', updateProgress, { passive: true });
+  }
+
+  const slides = document.querySelectorAll('.project-slide');
+  if (slides.length) {
+    const isMobile = () => window.innerWidth <= 980;
+
+    slides.forEach((slide) => {
+      slide.addEventListener('click', () => {
+        if (!isMobile()) return;
+        slides.forEach((item) => {
+          if (item !== slide) item.classList.remove('is-active');
+        });
+        slide.classList.toggle('is-active');
+      });
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      if (!isMobile()) return;
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        slides.forEach((item) => item.classList.remove('is-active'));
+        entry.target.classList.add('is-active');
+      });
+    }, { threshold: 0.62 });
+
+    slides.forEach((slide) => observer.observe(slide));
+  }
+});
