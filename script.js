@@ -1,12 +1,18 @@
-// Funções principais do portfólio: animações, menu, lightbox e formulário.
+// Funcionalidades principais do portfólio
+// - menu mobile
+// - efeito de digitação
+// - animações ao rolar
+// - transição entre páginas
+// - validação do formulário
+
 document.addEventListener('DOMContentLoaded', () => {
   initHeaderScroll();
   initTypedText();
   initRevealOnScroll();
-  initLightbox();
   initMobileMenu();
   initPageTransition();
   initTechBelt();
+  initLightbox();
   initContactForm();
 });
 
@@ -14,161 +20,121 @@ function initHeaderScroll() {
   const header = document.querySelector('.site-header');
   if (!header) return;
 
-  const toggleHeader = () => {
+  const updateHeader = () => {
     header.classList.toggle('scrolled', window.scrollY > 40);
   };
 
-  toggleHeader();
-  window.addEventListener('scroll', toggleHeader, { passive: true });
+  updateHeader();
+  window.addEventListener('scroll', updateHeader, { passive: true });
 }
 
 function initTypedText() {
   const typedEl = document.getElementById('typed');
   if (!typedEl) return;
 
-  const phrases = ['JavaScript', 'Frontend', 'FastAPI', 'SQL', 'C#', 'C++', 'C', 'SQL', 'BackEnd'];
-  const speed = 80;
-  const pause = 1200;
+  const words = ['JavaScript', 'Frontend', 'FastAPI', 'SQL', 'C#', 'C++', 'C', 'BackEnd'];
+  const typingSpeed = 80;
+  const pauseTime = 1200;
 
-  let phraseIndex = 0;
-  let charIndex = 0;
-  let forward = true;
+  let wordIndex = 0;
+  let letterIndex = 0;
+  let deleting = false;
 
-  function typeLoop() {
-    const currentPhrase = phrases[phraseIndex];
+  const type = () => {
+    const currentWord = words[wordIndex];
 
-    if (forward) {
-      charIndex += 1;
-      typedEl.textContent = currentPhrase.slice(0, charIndex);
+    typedEl.textContent = currentWord.slice(0, letterIndex);
 
-      if (charIndex === currentPhrase.length) {
-        forward = false;
-        setTimeout(typeLoop, pause);
-        return;
-      }
-    } else {
-      charIndex -= 1;
-      typedEl.textContent = currentPhrase.slice(0, charIndex);
-
-      if (charIndex === 0) {
-        forward = true;
-        phraseIndex = (phraseIndex + 1) % phrases.length;
-      }
+    if (!deleting && letterIndex < currentWord.length) {
+      letterIndex += 1;
+      setTimeout(type, typingSpeed);
+      return;
     }
 
-    setTimeout(typeLoop, speed);
-  }
+    if (!deleting && letterIndex === currentWord.length) {
+      deleting = true;
+      setTimeout(type, pauseTime);
+      return;
+    }
 
-  typeLoop();
+    if (deleting && letterIndex > 0) {
+      letterIndex -= 1;
+      setTimeout(type, typingSpeed);
+      return;
+    }
+
+    deleting = false;
+    wordIndex = (wordIndex + 1) % words.length;
+    setTimeout(type, typingSpeed);
+  };
+
+  type();
 }
 
 function initRevealOnScroll() {
-  const revealElements = document.querySelectorAll('.reveal');
-  if (!revealElements.length) return;
+  const elements = document.querySelectorAll('.reveal');
+  if (!elements.length) return;
 
   const observer = new IntersectionObserver((entries, obs) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
-
       entry.target.classList.add('visible');
       obs.unobserve(entry.target);
     });
   }, { threshold: 0.18 });
 
-  revealElements.forEach((element) => observer.observe(element));
-}
-
-function initLightbox() {
-  const galleryImages = Array.from(document.querySelectorAll('.gallery-item img'));
-  const lightbox = document.getElementById('siteLightbox');
-
-  if (!galleryImages.length || !lightbox) return;
-
-  const imageElement = lightbox.querySelector('.lb-img');
-  const closeButton = lightbox.querySelector('.lb-close');
-  const prevButton = lightbox.querySelector('.lb-prev');
-  const nextButton = lightbox.querySelector('.lb-next');
-  const imageSources = galleryImages.map((image) => image.src);
-
-  let currentIndex = 0;
-
-  function openLightbox(index) {
-    currentIndex = (index + imageSources.length) % imageSources.length;
-    imageElement.src = imageSources[currentIndex];
-    lightbox.hidden = false;
-  }
-
-  function closeLightbox() {
-    lightbox.hidden = true;
-  }
-
-  function showImage(direction) {
-    openLightbox(currentIndex + direction);
-  }
-
-  galleryImages.forEach((image, index) => {
-    image.addEventListener('click', () => openLightbox(index));
-  });
-
-  closeButton?.addEventListener('click', closeLightbox);
-  prevButton?.addEventListener('click', () => showImage(-1));
-  nextButton?.addEventListener('click', () => showImage(1));
-
-  window.addEventListener('keydown', (event) => {
-    if (lightbox.hidden) return;
-
-    if (event.key === 'Escape') closeLightbox();
-    if (event.key === 'ArrowLeft') showImage(-1);
-    if (event.key === 'ArrowRight') showImage(1);
-  });
+  elements.forEach((element) => observer.observe(element));
 }
 
 function initMobileMenu() {
-  const menuToggle = document.querySelector('.menu-toggle');
+  const button = document.querySelector('.menu-toggle');
   const nav = document.querySelector('.site-nav');
+  if (!button || !nav) return;
 
-  if (!menuToggle || !nav) return;
-
-  menuToggle.addEventListener('click', () => {
+  button.addEventListener('click', () => {
     const isOpen = nav.classList.toggle('open');
-    menuToggle.classList.toggle('active', isOpen);
-    menuToggle.setAttribute('aria-expanded', String(isOpen));
+    button.classList.toggle('active', isOpen);
+    button.setAttribute('aria-expanded', String(isOpen));
   });
 
   nav.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', () => {
       nav.classList.remove('open');
-      menuToggle.classList.remove('active');
-      menuToggle.setAttribute('aria-expanded', 'false');
+      button.classList.remove('active');
+      button.setAttribute('aria-expanded', 'false');
     });
   });
 }
 
 function initPageTransition() {
-  window.setTimeout(() => {
-    document.body.classList.remove('is-loading');
-  }, 80);
+  const internalLinks = document.querySelectorAll('a[href]');
 
-  document.querySelectorAll('a[href]').forEach((anchor) => {
-    const href = anchor.getAttribute('href');
+  internalLinks.forEach((link) => {
+    const href = link.getAttribute('href');
+    if (!href || isIgnoredLink(link, href)) return;
 
-    if (!href) return;
-    if (href.startsWith('#')) return;
-    if (href.startsWith('mailto:') || href.startsWith('tel:')) return;
-    if (anchor.target === '_blank') return;
-
-    const isExternal = href.startsWith('http') && !href.includes(location.host);
-    if (isExternal) return;
-
-    anchor.addEventListener('click', (event) => {
+    link.addEventListener('click', (event) => {
       event.preventDefault();
       document.body.classList.add('is-loading');
 
-      window.setTimeout(() => {
+      setTimeout(() => {
         window.location.href = href;
       }, 520);
     });
   });
+
+  setTimeout(() => document.body.classList.remove('is-loading'), 80);
+}
+
+function isIgnoredLink(link, href) {
+  const external = href.startsWith('http') && !href.includes(location.host);
+  return (
+    href.startsWith('#') ||
+    href.startsWith('mailto:') ||
+    href.startsWith('tel:') ||
+    link.target === '_blank' ||
+    external
+  );
 }
 
 function initTechBelt() {
@@ -182,24 +148,18 @@ function initTechBelt() {
     let speed = 0.4;
     let animationFrame;
 
-    function fillBelt() {
-      const targetWidth = container.clientWidth + baseWidth;
-
-      while (belt.scrollWidth < targetWidth) {
+    const fillBelt = () => {
+      while (belt.scrollWidth < container.clientWidth + baseWidth) {
         originalItems.forEach((item) => belt.appendChild(item.cloneNode(true)));
       }
-    }
+    };
 
-    function animate() {
+    const animate = () => {
       position += speed;
-
-      if (position >= baseWidth) {
-        position = 0;
-      }
-
+      if (position >= baseWidth) position = 0;
       belt.style.transform = `translateX(${-position}px)`;
       animationFrame = requestAnimationFrame(animate);
-    }
+    };
 
     fillBelt();
     animate();
@@ -209,11 +169,54 @@ function initTechBelt() {
 
     window.addEventListener('resize', () => {
       cancelAnimationFrame(animationFrame);
-      belt.style.transform = 'translateX(0)';
       position = 0;
+      belt.style.transform = 'translateX(0)';
       fillBelt();
       animate();
     });
+  });
+}
+
+function initLightbox() {
+  const images = Array.from(document.querySelectorAll('.gallery-item img'));
+  const lightbox = document.getElementById('siteLightbox');
+  if (!images.length || !lightbox) return;
+
+  const preview = lightbox.querySelector('.lb-img');
+  const closeBtn = lightbox.querySelector('.lb-close');
+  const prevBtn = lightbox.querySelector('.lb-prev');
+  const nextBtn = lightbox.querySelector('.lb-next');
+
+  let currentIndex = 0;
+
+  const open = (index) => {
+    currentIndex = (index + images.length) % images.length;
+    preview.src = images[currentIndex].src;
+    preview.alt = images[currentIndex].alt || 'Imagem ampliada';
+    lightbox.hidden = false;
+  };
+
+  const close = () => {
+    lightbox.hidden = true;
+  };
+
+  const navigate = (direction) => {
+    open(currentIndex + direction);
+  };
+
+  images.forEach((image, index) => {
+    image.addEventListener('click', () => open(index));
+  });
+
+  closeBtn?.addEventListener('click', close);
+  prevBtn?.addEventListener('click', () => navigate(-1));
+  nextBtn?.addEventListener('click', () => navigate(1));
+
+  window.addEventListener('keydown', (event) => {
+    if (lightbox.hidden) return;
+    if (event.key === 'Escape') close();
+    if (event.key === 'ArrowLeft') navigate(-1);
+    if (event.key === 'ArrowRight') navigate(1);
   });
 }
 
@@ -222,15 +225,15 @@ function initContactForm() {
   if (!form) return;
 
   const feedback = form.querySelector('.form-message');
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
 
-    const name = form.querySelector('[name="name"]').value.trim();
-    const email = form.querySelector('[name="email"]').value.trim();
-    const message = form.querySelector('[name="message"]').value.trim();
-    const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    const isValid = name.length > 1 && validEmail && message.length > 6;
+    const name = form.elements.name.value.trim();
+    const email = form.elements.email.value.trim();
+    const message = form.elements.message.value.trim();
+    const isValid = name.length > 1 && emailRegex.test(email) && message.length > 6;
 
     if (feedback) {
       feedback.textContent = isValid
@@ -238,8 +241,6 @@ function initContactForm() {
         : 'Preencha nome, e-mail válido e mensagem.';
     }
 
-    if (isValid) {
-      form.reset();
-    }
+    if (isValid) form.reset();
   });
 }
