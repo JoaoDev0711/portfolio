@@ -1,89 +1,97 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Contato — João Rodrigues" />
-    <title>Contato | jdev</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body class="is-loading">
-    <header class="site-header">
-      <div class="container header-inner">
-        <div class="brand"><span class="dot"></span>Joao<span class="dev">.dev</span></div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Entre em contato com João Rodrigues para projetos, dúvidas e oportunidades." />
+  <title>Contato | João Rodrigues</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="is-loading">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Ir para a página inicial">
+        <span class="dot"></span>João<span class="dev">.dev</span>
+      </a>
 
-        <button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+      <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
 
-        <nav class="site-nav" aria-label="Navegação principal">
-          <a href="index.html">Início</a>
-          <a href="projetos.html">Projetos</a>
-          <a href="sobre.html">Sobre</a>
-          <a href="contato.html" class="active">Contato</a>
-    
-        </nav>
+      <nav class="site-nav" aria-label="Navegação principal">
+        <a href="index.html">Início</a>
+        <a href="projetos.html">Projetos</a>
+        <a href="sobre.html">Sobre</a>
+        <a href="contato.html" class="active">Contato</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="section reveal contact-section">
+      <div class="section-heading">
+        <p class="section-label">Contato</p>
+        <h1>Vamos transformar sua ideia em um projeto digital?</h1>
+        <p class="section-copy">Preencha o formulário abaixo ou acesse uma das minhas redes de contato.</p>
       </div>
-    </header>
 
-    <main class="container">
-      <section class="section reveal contact-section">
-        <div class="section-heading">
-          <p class="section-label">Contato</p>
-          <h3>Vamos transformar sua ideia em um projeto digital sólido?</h3>
-          <p class="section-copy">Preencha o formulário abaixo e receba uma resposta com sugestão de próximos passos.</p>
-        </div>
+      <div class="contact-grid">
+        <article class="contact-card reveal">
+          <form id="contactForm" class="contact-form" novalidate>
+            <label for="name">Nome</label>
+            <input id="name" name="name" type="text" placeholder="Seu nome" />
 
-        <div class="contact-grid">
-          <article class="contact-card dark-card reveal">
-            <form id="contactForm" class="contact-form" novalidate>
-              <label for="name">Nome</label>
-              <input id="name" name="name" type="text" placeholder="Seu nome" />
+            <label for="email">E-mail</label>
+            <input id="email" name="email" type="email" placeholder="seu@email.com" />
 
-              <label for="email">E-mail</label>
-              <input id="email" name="email" type="email" placeholder="seu@email.com" />
+            <label for="message">Mensagem</label>
+            <textarea id="message" name="message" placeholder="Conte-me sobre o seu projeto"></textarea>
 
-              <label for="message">Mensagem</label>
-              <textarea id="message" name="message" placeholder="Conte-me sobre o seu projeto"></textarea>
+            <button class="btn primary" type="submit">Enviar mensagem</button>
+            <p class="form-message" aria-live="polite"></p>
+          </form>
+        </article>
 
-              <button class="btn primary" type="submit">Enviar mensagem</button>
-              <p class="form-message" aria-live="polite"></p>
-            </form>
-          </article>
+        <aside class="contact-card reveal">
+          <p class="section-label">Informações</p>
+          <h2>Disponibilidade</h2>
+          <p>Atendimento remoto para projetos de pequeno e médio porte.</p>
 
-          <aside class="contact-card reveal dark-card">
-            <p class="section-label">Informações</p>
-            <h4>Disponibilidade</h4>
-            <p>Atendimento remoto para projetos de pequeno e médio porte.</p>
-            <ul class="info-list">
-              <li>Resposta em até 48 horas</li>
-              <li>Orientação de estrutura e conteúdo</li>
-              <li>Entrega alinhada ao calendário do projeto</li>
+          <ul class="info-list">
+            <li>Resposta em até 48 horas</li>
+            <li>Orientação de estrutura e conteúdo</li>
+            <li>Entrega alinhada ao calendário do projeto</li>
+          </ul>
+
+          <div class="contact-methods">
+            <p class="section-label">Contato direto</p>
+            <ul class="contact-method-list">
+              <li><a href="https://mail.google.com/mail/?view=cm&fs=1&to=joaoferreiraneto0711@gmail.com&su=Contato%20pelo%20site" target="_blank" rel="noreferrer noopener">Gmail</a></li>
+              <li><a href="https://instagram.com/jferreira7.11" target="_blank" rel="noreferrer noopener">Instagram</a></li>
+              <li><a href="https://github.com/JoaoDev0711" target="_blank" rel="noreferrer noopener">GitHub</a></li>
+              <li><a href="https://www.linkedin.com/in/jo%C3%A3o-rodrigues-205999291/" target="_blank" rel="noreferrer noopener">LinkedIn</a></li>
             </ul>
-            <div class="contact-methods">
-              <p class="section-label">Contato direto</p>
-              <ul class="contact-method-list">
-                <li><a class="icon-mail" href="https://mail.google.com/mail/?view=cm&fs=1&to=joaoferreiraneto0711@gmail.com&su=Contato%20pelo%20site&body=Olá%20João%2C%0A%0AGostaria%20de%20entrar%20em%20contato%20sobre%20um%20projeto." target="_blank" rel="noreferrer noopener" title="Abrir Gmail no navegador para enviar e-mail">Gmail</a></li>
-                <li><a class="icon-instagram" href="https://instagram.com/jferreira7.11" target="_blank" rel="noreferrer noopener">Instagram</a></li>
-                <li><a class="icon-github" href="https://github.com/JoaoDev0711" target="_blank" rel="noreferrer noopener">GitHub</a></li>
-                <li><a class="icon-linkedin" href="https://www.linkedin.com/in/jo%C3%A3o-rodrigues-205999291/" target="_blank" rel="noreferrer noopener">LinkedIn</a></li>
-              </ul>
-            </div>
-          </aside>
-        </div>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <div class="container footer-inner">
-        <p>© 2026 João Rodrigues (jdev). Todos os direitos reservados.</p>
+          </div>
+        </aside>
       </div>
-    </footer>
+    </section>
+  </main>
 
-    <div class="page-transition"><div class="loading-dots"><span></span><span></span><span></span></div></div>
-    <script src="script.js"></script>
-  </body>
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 João Rodrigues. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <div class="page-transition" aria-hidden="true">
+    <div class="loading-dots"><span></span><span></span><span></span></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>

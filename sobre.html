@@ -1,69 +1,75 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Conheça mais sobre a trajetória e habilidades de João Rodrigues." />
-    <title>Sobre | jdev</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body class="is-loading">
-    <!-- Cabeçalho do site e navegação principal -->
-    <header class="site-header">
-      <div class="container header-inner">
-        <div class="brand"><span class="dot"></span>Joao<span class="dev">.dev</span></div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Conheça a trajetória, habilidades e objetivos profissionais de João Rodrigues." />
+  <title>Sobre | João Rodrigues</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="is-loading">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Ir para a página inicial">
+        <span class="dot"></span>João<span class="dev">.dev</span>
+      </a>
 
-        <button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+      <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
 
-        <nav class="site-nav" aria-label="Navegação principal">
-          <a href="index.html">Início</a>
-          <a href="projetos.html">Projetos</a>
-          <a href="sobre.html" class="active">Sobre</a>
-          <a href="contato.html">Contato</a>
-    
-        </nav>
+      <nav class="site-nav" aria-label="Navegação principal">
+        <a href="index.html">Início</a>
+        <a href="projetos.html">Projetos</a>
+        <a href="sobre.html" class="active">Sobre</a>
+        <a href="contato.html">Contato</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="section reveal about-section">
+      <div class="section-heading">
+        <p class="section-label">Sobre mim</p>
+        <h1>Sou João Rodrigues, estudante de Engenharia de Software e desenvolvedor em formação.</h1>
+        <p class="section-copy">Tenho interesse por tecnologia, programação e criação de soluções digitais. Busco evoluir constantemente e aplicar meus conhecimentos em projetos reais.</p>
       </div>
-    </header>
 
-    <main class="container">
-      <section class="section reveal about-section">
-        <div class="section-heading">
-          <p class="section-label">Sobre mim</p>
-          <h3>Sou João Rodrigues, tenho 21 anos, e atualmente estou estuando Engenharia de Software, procuro sempre aprender algo novo, fascinado por tecnologia e carros, minha paixao por programacao comecou em 2024 onde comecei um curso de Desenvolvedor de Software .</h3>
+      <div class="about-card reveal">
+        <div class="about-photo">
+          <img src="assets/foto-sobre.jpeg" alt="Foto de João Rodrigues" />
         </div>
 
-        <div class="about-card reveal">
-          <div class="about-photo">
-            <img src="assets/foto-sobre.jpeg" alt="Foto de João Rodrigues" />
-          </div>
-          <div class="about-desc dark">
-            <p>
-              Desenvolvedor que une estética, código limpo e presença digital e esta aprendendo com o tempo e sempre aberto a novas ideias e possibilidades.
-              Trabalho com HTML, CSS, JavaScript, C#, C++ e SQL para criar experiências que impressionam e
-              funcionam em todas as telas.
-            </p>
-            <ul class="about-list">
-              <li>Design limpo e identidade visual forte</li>
-              <li>Sistemas responsivos com performance</li>
-              <li>Integração de front-end e back-end</li>
-            </ul>
-          </div>
+        <div class="about-desc">
+          <p>
+            Iniciei minha trajetória na programação em 2024, durante um curso de Desenvolvimento de Software. Desde então, venho estudando front-end, back-end e boas práticas de desenvolvimento para criar interfaces modernas e sistemas funcionais.
+          </p>
+
+          <ul class="about-list">
+            <li>Design limpo e identidade visual consistente</li>
+            <li>Sites responsivos com boa experiência de uso</li>
+            <li>Integração entre front-end, back-end e banco de dados</li>
+          </ul>
         </div>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <div class="container footer-inner">
-        <p>© 2026 João Rodrigues (jdev). Todos os direitos reservados.</p>
       </div>
-    </footer>
+    </section>
+  </main>
 
-    <div class="page-transition"><div class="loading-dots"><span></span><span></span><span></span></div></div>
-    <script src="script.js"></script>
-  </body>
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 João Rodrigues. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <div class="page-transition" aria-hidden="true">
+    <div class="loading-dots"><span></span><span></span><span></span></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>

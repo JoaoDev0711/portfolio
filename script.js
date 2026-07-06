@@ -1,139 +1,246 @@
-// Lógica principal da página: animações, navegação, lightbox e formulário
+// Funcionalidades principais do portfólio
+// - menu mobile
+// - efeito de digitação
+// - animações ao rolar
+// - transição entre páginas
+// - validação do formulário
+
 document.addEventListener('DOMContentLoaded', () => {
-  // encolher o cabeçalho ao rolar a página
+  initHeaderScroll();
+  initTypedText();
+  initRevealOnScroll();
+  initMobileMenu();
+  initPageTransition();
+  initTechBelt();
+  initLightbox();
+  initContactForm();
+});
+
+function initHeaderScroll() {
   const header = document.querySelector('.site-header');
-  const toggleHeader = () => header?.classList.toggle('scrolled', window.scrollY > 40);
-  window.addEventListener('scroll', toggleHeader, { passive: true });
+  if (!header) return;
 
-  // texto digitado no subtítulo
+  const updateHeader = () => {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  };
+
+  updateHeader();
+  window.addEventListener('scroll', updateHeader, { passive: true });
+}
+
+function initTypedText() {
   const typedEl = document.getElementById('typed');
-  if (typedEl) {
-    const phrases = ['JavaScript', 'Frontend', 'FastAPI', 'SQL', 'C#', 'C++', 'C', 'SQL', 'BackEnd'];
-    let pi = 0, ci = 0, forward = true;
-    const speed = 80, pause = 1200;
-    (function tick(){
-      const full = phrases[pi];
-      if (forward) {
-        ci++; typedEl.textContent = full.slice(0,ci);
-        if (ci === full.length) { forward = false; setTimeout(tick, pause); return; }
-      } else {
-        ci--; typedEl.textContent = full.slice(0,ci);
-        if (ci === 0) { forward = true; pi = (pi+1)%phrases.length; }
-      }
-      setTimeout(tick, speed);
-    })();
-  }
+  if (!typedEl) return;
 
-  // revelar elementos ao rolar com a classe .reveal
-  const reveals = document.querySelectorAll('.reveal');
-  if (reveals.length) {
-    const obs = new IntersectionObserver((entries, o)=>{
-      entries.forEach(e=>{ if (e.isIntersecting){ e.target.classList.add('visible'); o.unobserve(e.target);} });
-    },{threshold:0.18});
-    reveals.forEach(r=>obs.observe(r));
-  }
+  const words = ['JavaScript', 'Frontend', 'FastAPI', 'SQL', 'C#', 'C++', 'C', 'BackEnd'];
+  const typingSpeed = 80;
+  const pauseTime = 1200;
 
-  // pausar animação da correia ao passar o mouse
-  document.querySelectorAll('.tech-belt').forEach(b=>{
-    b.addEventListener('mouseenter', ()=> b.querySelectorAll('.belt').forEach(bb=>bb.style.animationPlayState='paused'));
-    b.addEventListener('mouseleave', ()=> b.querySelectorAll('.belt').forEach(bb=>bb.style.animationPlayState='running'));
-  });
+  let wordIndex = 0;
+  let letterIndex = 0;
+  let deleting = false;
 
-  // galeria lightbox
-  const galleryImgs = Array.from(document.querySelectorAll('.gallery-item img'));
-  const lightbox = document.getElementById('siteLightbox');
-  const lbImg = lightbox?.querySelector('.lb-img');
-  const lbClose = lightbox?.querySelector('.lb-close');
-  const lbPrev = lightbox?.querySelector('.lb-prev');
-  const lbNext = lightbox?.querySelector('.lb-next');
-  let current = 0;
-  const images = galleryImgs.map(i=>i.src);
-  function open(idx){ if (!lightbox) return; current = (idx+images.length)%images.length; lbImg.src = images[current]; lightbox.hidden = false; }
-  function close(){ if (!lightbox) return; lightbox.hidden = true; }
-  function showNext(dir=1){ open(current+dir); }
-  galleryImgs.forEach((img, i)=> img.addEventListener('click', ()=>open(i)));
-  lbClose?.addEventListener('click', close);
-  lbPrev?.addEventListener('click', ()=>showNext(-1));
-  lbNext?.addEventListener('click', ()=>showNext(1));
-  window.addEventListener('keydown', (e)=>{ if (lightbox && !lightbox.hidden){ if (e.key==='Escape') close(); if (e.key==='ArrowLeft') showNext(-1); if (e.key==='ArrowRight') showNext(1);} });
+  const type = () => {
+    const currentWord = words[wordIndex];
 
-  // alternar menu mobile
-  const menuToggle = document.querySelector('.menu-toggle');
-  const nav = document.querySelector('.site-nav');
-  if (menuToggle && nav) {
-    const toggleNav = () => {
-      const open = nav.classList.toggle('open');
-      menuToggle.classList.toggle('active');
-      menuToggle.setAttribute('aria-expanded', String(open));
-    };
+    typedEl.textContent = currentWord.slice(0, letterIndex);
 
-    menuToggle.addEventListener('click', toggleNav);
-    nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
-      if (nav.classList.contains('open')) toggleNav();
-    }));
-
-    document.addEventListener('click', (event) => {
-      if (!nav.contains(event.target) && !menuToggle.contains(event.target) && nav.classList.contains('open')) {
-        toggleNav();
-      }
-    });
-  }
-
-  // animação de navegação entre páginas internas
-  document.querySelectorAll('a[href]').forEach(anchor=>{
-    const href = anchor.getAttribute('href');
-    if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:') || anchor.target === '_blank') return;
-    const isExternal = href.startsWith('http') && !href.includes(location.host);
-    if (isExternal) return;
-    anchor.addEventListener('click', (ev)=>{
-      ev.preventDefault();
-      document.body.classList.add('is-loading');
-      window.setTimeout(()=>{ window.location.href = href; }, 520);
-    });
-  });
-
-  // transição inicial: remove a classe de carregamento quando a página terminar de carregar
-  window.setTimeout(()=> document.body.classList.remove('is-loading'), 80);
-
-  // correia de tecnologia contínua: clona os itens originais para manter o loop suave
-  document.querySelectorAll('.tech-belt').forEach(container=>{
-    const belt = container.querySelector('.belt');
-    if (!belt) return;
-    const originalItems = Array.from(belt.children).map(node => node.cloneNode(true));
-    const baseWidth = belt.scrollWidth;
-    const targetWidth = container.clientWidth + baseWidth;
-
-    while (belt.scrollWidth < targetWidth) {
-      originalItems.forEach(item => belt.appendChild(item.cloneNode(true)));
+    if (!deleting && letterIndex < currentWord.length) {
+      letterIndex += 1;
+      setTimeout(type, typingSpeed);
+      return;
     }
 
-    let pos = 0;
-    let speed = 0.4; // px per frame
-    let raf;
-    const step = ()=>{
-      pos += speed;
-      if (pos >= baseWidth) pos = 0;
-      belt.style.transform = `translateX(${-pos}px)`;
-      raf = requestAnimationFrame(step);
-    };
-    step();
-    container.addEventListener('mouseenter', ()=>{ speed = 0; });
-    container.addEventListener('mouseleave', ()=>{ speed = 0.4; });
-    window.addEventListener('resize', ()=>{ cancelAnimationFrame(raf); belt.style.transform = 'translateX(0)'; pos = 0; while (belt.scrollWidth < container.clientWidth + baseWidth) { originalItems.forEach(item => belt.appendChild(item.cloneNode(true))); } step(); });
+    if (!deleting && letterIndex === currentWord.length) {
+      deleting = true;
+      setTimeout(type, pauseTime);
+      return;
+    }
+
+    if (deleting && letterIndex > 0) {
+      letterIndex -= 1;
+      setTimeout(type, typingSpeed);
+      return;
+    }
+
+    deleting = false;
+    wordIndex = (wordIndex + 1) % words.length;
+    setTimeout(type, typingSpeed);
+  };
+
+  type();
+}
+
+function initRevealOnScroll() {
+  const elements = document.querySelectorAll('.reveal');
+  if (!elements.length) return;
+
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('visible');
+      obs.unobserve(entry.target);
+    });
+  }, { threshold: 0.18 });
+
+  elements.forEach((element) => observer.observe(element));
+}
+
+function initMobileMenu() {
+  const button = document.querySelector('.menu-toggle');
+  const nav = document.querySelector('.site-nav');
+  if (!button || !nav) return;
+
+  button.addEventListener('click', () => {
+    const isOpen = nav.classList.toggle('open');
+    button.classList.toggle('active', isOpen);
+    button.setAttribute('aria-expanded', String(isOpen));
   });
 
-  // validação simples do formulário de contato
-  const form = document.getElementById('contactForm');
-  if (form){
-    form.addEventListener('submit', (ev)=>{
-      ev.preventDefault();
-      const name = form.querySelector('[name="name"]').value.trim();
-      const email = form.querySelector('[name="email"]').value.trim();
-      const msg = form.querySelector('[name="message"]').value.trim();
-      const feedback = form.querySelector('.form-message');
-      const ok = name.length>1 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && msg.length>6;
-      if (feedback) feedback.textContent = ok? 'Mensagem enviada — obrigado!' : 'Preencha nome, e‑mail válido e mensagem.';
-      if (ok) form.reset();
+  nav.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      nav.classList.remove('open');
+      button.classList.remove('active');
+      button.setAttribute('aria-expanded', 'false');
     });
-  }
-});
+  });
+}
+
+function initPageTransition() {
+  const internalLinks = document.querySelectorAll('a[href]');
+
+  internalLinks.forEach((link) => {
+    const href = link.getAttribute('href');
+    if (!href || isIgnoredLink(link, href)) return;
+
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
+      document.body.classList.add('is-loading');
+
+      setTimeout(() => {
+        window.location.href = href;
+      }, 520);
+    });
+  });
+
+  setTimeout(() => document.body.classList.remove('is-loading'), 80);
+}
+
+function isIgnoredLink(link, href) {
+  const external = href.startsWith('http') && !href.includes(location.host);
+  return (
+    href.startsWith('#') ||
+    href.startsWith('mailto:') ||
+    href.startsWith('tel:') ||
+    link.target === '_blank' ||
+    external
+  );
+}
+
+function initTechBelt() {
+  document.querySelectorAll('.tech-belt').forEach((container) => {
+    const belt = container.querySelector('.belt');
+    if (!belt) return;
+
+    const originalItems = Array.from(belt.children).map((item) => item.cloneNode(true));
+    const baseWidth = belt.scrollWidth;
+    let position = 0;
+    let speed = 0.4;
+    let animationFrame;
+
+    const fillBelt = () => {
+      while (belt.scrollWidth < container.clientWidth + baseWidth) {
+        originalItems.forEach((item) => belt.appendChild(item.cloneNode(true)));
+      }
+    };
+
+    const animate = () => {
+      position += speed;
+      if (position >= baseWidth) position = 0;
+      belt.style.transform = `translateX(${-position}px)`;
+      animationFrame = requestAnimationFrame(animate);
+    };
+
+    fillBelt();
+    animate();
+
+    container.addEventListener('mouseenter', () => { speed = 0; });
+    container.addEventListener('mouseleave', () => { speed = 0.4; });
+
+    window.addEventListener('resize', () => {
+      cancelAnimationFrame(animationFrame);
+      position = 0;
+      belt.style.transform = 'translateX(0)';
+      fillBelt();
+      animate();
+    });
+  });
+}
+
+function initLightbox() {
+  const images = Array.from(document.querySelectorAll('.gallery-item img'));
+  const lightbox = document.getElementById('siteLightbox');
+  if (!images.length || !lightbox) return;
+
+  const preview = lightbox.querySelector('.lb-img');
+  const closeBtn = lightbox.querySelector('.lb-close');
+  const prevBtn = lightbox.querySelector('.lb-prev');
+  const nextBtn = lightbox.querySelector('.lb-next');
+
+  let currentIndex = 0;
+
+  const open = (index) => {
+    currentIndex = (index + images.length) % images.length;
+    preview.src = images[currentIndex].src;
+    preview.alt = images[currentIndex].alt || 'Imagem ampliada';
+    lightbox.hidden = false;
+  };
+
+  const close = () => {
+    lightbox.hidden = true;
+  };
+
+  const navigate = (direction) => {
+    open(currentIndex + direction);
+  };
+
+  images.forEach((image, index) => {
+    image.addEventListener('click', () => open(index));
+  });
+
+  closeBtn?.addEventListener('click', close);
+  prevBtn?.addEventListener('click', () => navigate(-1));
+  nextBtn?.addEventListener('click', () => navigate(1));
+
+  window.addEventListener('keydown', (event) => {
+    if (lightbox.hidden) return;
+    if (event.key === 'Escape') close();
+    if (event.key === 'ArrowLeft') navigate(-1);
+    if (event.key === 'ArrowRight') navigate(1);
+  });
+}
+
+function initContactForm() {
+  const form = document.getElementById('contactForm');
+  if (!form) return;
+
+  const feedback = form.querySelector('.form-message');
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const name = form.elements.name.value.trim();
+    const email = form.elements.email.value.trim();
+    const message = form.elements.message.value.trim();
+    const isValid = name.length > 1 && emailRegex.test(email) && message.length > 6;
+
+    if (feedback) {
+      feedback.textContent = isValid
+        ? 'Mensagem enviada — obrigado!'
+        : 'Preencha nome, e-mail válido e mensagem.';
+    }
+
+    if (isValid) form.reset();
+  });
+}
